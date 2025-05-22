@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package main
+package testdata
 
 import (
-	"testing"
+	"context"
+
+	"github.com/lvan100/gomock/mockgen/testdata/inner"
 )
 
-func TestMockgen(t *testing.T) {
-	run(runParam{
-		sourceDir:      "./testdata",
-		outputFile:     "src_mock.go",
-		mockInterfaces: "!ServiceV2",
-	})
+type RepositoryV2[T ~int | ~uint] interface {
+	Save(item T) error
+	FindByID(id string) (T, error)
+}
+
+type ServiceV2 interface {
+	Get(ctx context.Context, req *inner.Request, params map[string]string) (*Response, error)
 }
